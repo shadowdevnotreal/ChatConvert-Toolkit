@@ -55,6 +55,9 @@ Follow the on-screen instructions to select your conversion option.
 
 *For the toolkit to function correctly, ensure that the CSV file you wish to convert is located in the same directory as the Python scripts. The scripts are designed to automatically find and process files within their current working directory, eliminating the need for specifying full file paths.*
 
+* For example, if your script is located at /path/to/your/script/ and your CSV file named chat.csv is also in /path/to/your/script/, you can simply use:
+  csv_file_path = 'chat.csv'
+
 **Installation of Prerequisites**
 
 * The toolkit includes a feature to automatically install required Python packages.
