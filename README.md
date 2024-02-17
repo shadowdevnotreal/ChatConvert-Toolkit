@@ -22,7 +22,7 @@ Before running the ChatConvert Toolkit, ensure you have Python and `pip` install
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/yourusername/ChatConvert-Toolkit.git
+   git clone https://github.com/shadowdevnotreal/ChatConvert-Toolkit.git
 
 2. **Navigate to the Project Directory**
 
@@ -66,6 +66,17 @@ Follow the on-screen instructions to select your conversion option.
 
 
 **Contribution**
+- Contributions are what make the open-source community such an amazing place to learn, inspire, and create.
+- Any contributions you make are **greatly appreciated.**
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## Feedback and Support
+For support, feedback, or suggestions, please open an issue.
 
 Contributions to the ChatConvert Toolkit are welcome. Please feel free to fork the repository, make your changes, and submit a pull request.
 
@@ -76,8 +87,8 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ### Final Steps
 
-- Ensure you replace `https://github.com/yourusername/ChatConvert-Toolkit.git` with the actual URL of your GitHub repository.
+- Ensure you replace `https://github.com/shadowdevnotreal/ChatConvert-Toolkit.git` with the actual URL of your GitHub repository.
 - Adjust any specific instructions or descriptions as needed based on your project's setup or requirements.
 - If you have not already, consider adding a `LICENSE` file to clearly communicate how others can use or contribute to your project.
 
-This README provides a comprehensive guide for users to get started with your toolkit, understand its features, and know how to contribute.
+This `README` provides a comprehensive guide for users to get started, understand its features, and know how to contribute.
