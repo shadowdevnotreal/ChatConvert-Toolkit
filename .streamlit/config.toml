@@ -1,0 +1,19 @@
+[server]
+# Increase max file upload size to 500MB (default is 200MB)
+maxUploadSize = 500
+
+# Enable file watcher for auto-reload during development
+fileWatcherType = "auto"
+
+[browser]
+# Automatically open browser on start
+gatherUsageStats = false
+
+[theme]
+# Dark mode theme
+base = "dark"
+primaryColor = "#FF6B6B"
+backgroundColor = "#0E1117"
+secondaryBackgroundColor = "#262730"
+textColor = "#FAFAFA"
+font = "sans serif"

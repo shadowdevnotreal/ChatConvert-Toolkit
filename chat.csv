@@ -1,0 +1,31 @@
+timestamp,username,message
+2024-01-15 09:00:00,Alice,Good morning everyone!
+2024-01-15 09:01:30,Bob,Hey Alice! How are you doing?
+2024-01-15 09:02:15,Alice,I'm great! Just finished that project we discussed.
+2024-01-15 09:03:45,Charlie,Morning team! What project are we talking about?
+2024-01-15 09:04:20,Alice,"The ChatConvert Toolkit - it's a tool for converting CSV chat logs to different formats."
+2024-01-15 09:05:10,Bob,That sounds really useful! What formats does it support?
+2024-01-15 09:06:00,Alice,"HTML, Markdown, SQLite, and PDF. Pretty comprehensive!"
+2024-01-15 09:07:30,Charlie,Wow! Can we see a demo?
+2024-01-15 09:08:15,Alice,Of course! I'll share the repository link.
+2024-01-15 09:09:00,Bob,Is it open source?
+2024-01-15 09:10:20,Alice,"Yes! It's MIT licensed. Anyone can use it."
+2024-01-15 09:11:45,Charlie,That's awesome! I have some old chat logs I'd love to convert.
+2024-01-15 09:12:30,Bob,Me too! Especially to PDF for archiving.
+2024-01-15 09:13:15,Alice,The PDF output looks really professional with the formatting.
+2024-01-15 09:14:00,Charlie,How do we get started with it?
+2024-01-15 09:15:20,Alice,"Just clone the repo, run the menu script, and follow the prompts!"
+2024-01-15 09:16:45,Bob,Is there a requirements.txt for dependencies?
+2024-01-15 09:17:30,Alice,"Yes! Just reportlab for PDF support. Everything else is built-in."
+2024-01-15 09:18:15,Charlie,Perfect! I'll try it out this afternoon.
+2024-01-15 09:19:00,Bob,Can it handle large CSV files?
+2024-01-15 09:20:20,Alice,"It should work fine with most files. The SQLite option is great for large datasets."
+2024-01-15 09:21:45,Charlie,Makes sense. You can query the data then.
+2024-01-15 09:22:30,Bob,"Exactly! Much better than scrolling through thousands of messages."
+2024-01-15 09:23:15,Alice,The HTML output is my favorite though - it looks beautiful!
+2024-01-15 09:24:00,Charlie,I'm excited to see it. Thanks for building this Alice!
+2024-01-15 09:25:20,Bob,Yeah seriously! This will save so much time.
+2024-01-15 09:26:45,Alice,Happy to help! Let me know if you run into any issues.
+2024-01-15 09:27:30,Charlie,Will do! Have a great day everyone!
+2024-01-15 09:28:15,Bob,You too! Talk later!
+2024-01-15 09:29:00,Alice,See you both! Happy converting! 😊
