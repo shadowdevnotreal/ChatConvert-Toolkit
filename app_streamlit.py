@@ -16,6 +16,10 @@ import os
 from datetime import datetime
 import json
 
+import streamlit as st
+api_key = st.secrets.get("GROQ_API_KEY")
+analytics = AnalyticsEngine(use_ai=True, api_key=api_key)
+
 # Add chatconvert to path
 sys.path.insert(0, str(Path(__file__).parent))
 
