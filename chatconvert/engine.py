@@ -323,6 +323,25 @@ class ConversionEngine:
             'description': parser_class.__doc__ or '',
         }
 
+    def get_converter(self, format: str) -> BaseConverter:
+        """
+        Get a converter instance for the specified format.
+
+        Args:
+            format: Output format (e.g., 'pdf', 'html', 'md')
+
+        Returns:
+            Converter instance
+
+        Raises:
+            ValueError: If format is unsupported
+        """
+        format = format.lower().lstrip('.')
+        if format not in CONVERTERS:
+            raise ValueError(f"Unsupported output format: {format}")
+
+        return CONVERTERS[format]()
+
     def get_converter_info(self, format: str) -> Optional[Dict[str, Any]]:
         """
         Get information about a specific converter.
