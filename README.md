@@ -3,7 +3,7 @@
 # 💬 ChatConvert Toolkit v2.0
 
 <p align="center">
-  <img src="https://github.com/shadowdevnotreal/ChatConvert-Toolkit/assets/43219706/7b8c0498-4516-420e-9791-7cd6f6d4dde7" alt="ChatConvert Banner" width="800"/>
+  <img src="https://raw.githubusercontent.com/shadowdevnotreal/ChatConvert-Toolkit/main/chatconvert.jpg" alt="ChatConvert Banner" width="800"/>
 </p>
 
 ### 🚀 Universal Text Converter & Analytics Platform

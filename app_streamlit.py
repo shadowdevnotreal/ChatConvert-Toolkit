@@ -350,13 +350,21 @@ def main():
         if 'key_validated' not in st.session_state:
             st.session_state.key_validated = False
 
+        # Check if API key exists in secrets
+        secret_key = st.secrets.get("GROQ_API_KEY", None)
+        has_secret = secret_key is not None and len(secret_key) > 0
+
+        if has_secret and not st.session_state.groq_api_key:
+            st.success("✓ API key loaded from secrets.toml")
+            st.caption(f"Key: {secret_key[:8]}...{secret_key[-4:]}")
+
         # User API key input
         user_api_key = st.text_input(
-            "Groq API Key",
+            "Groq API Key (Optional)" if has_secret else "Groq API Key",
             value=st.session_state.groq_api_key,
             type="password",
-            placeholder="gsk_your_api_key_here",
-            help="Optional: Add your Groq API key for AI-powered analytics",
+            placeholder="gsk_your_api_key_here" if not has_secret else "Using secret key (enter to override)",
+            help="Optional: Add your Groq API key for AI-powered analytics. You can also add it to .streamlit/secrets.toml",
             key="api_key_input"
         )
 
@@ -400,14 +408,17 @@ def main():
                     st.warning("⚠️ Not tested", icon="⚠️")
 
         # Status display
-        if user_api_key:
+        if user_api_key or has_secret:
             st.success("✓ AI-powered analytics enabled")
-            st.caption("Using AI for better sentiment and topic detection")
+            if has_secret and not user_api_key:
+                st.caption("Using API key from secrets.toml")
+            else:
+                st.caption("Using AI for better sentiment and topic detection")
         else:
             st.info("ℹ️ Using keyword-based analytics")
             st.caption("Free forever, no API key needed")
 
-        with st.expander("📖 How to get a free API key"):
+        with st.expander("📖 How to get & configure API key"):
             st.markdown("""
             **Get your free Groq API key:**
 
@@ -415,7 +426,20 @@ def main():
             2. Sign up (free account)
             3. Go to API Keys section
             4. Click "Create API Key"
-            5. Copy and paste it above
+            5. Copy the key
+
+            **Option 1: Use secrets.toml (recommended)**
+            ```bash
+            # Copy example file
+            cp .streamlit/secrets.toml.example .streamlit/secrets.toml
+
+            # Edit and add your key
+            nano .streamlit/secrets.toml
+            ```
+            Then restart the app - your key will load automatically!
+
+            **Option 2: Enter manually**
+            Paste your key in the input field above (temporary, lost on reload)
 
             **Free tier includes:**
             - 14,400 requests/day
