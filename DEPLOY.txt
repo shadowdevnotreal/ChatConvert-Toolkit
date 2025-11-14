@@ -1,0 +1,32 @@
+╔══════════════════════════════════════════════════════════════╗
+║                                                              ║
+║   🚀 TO DEPLOY TO STREAMLIT CLOUD                           ║
+║                                                              ║
+║   Use this file: app_streamlit.py (in the root folder)      ║
+║                                                              ║
+║   1. Go to: https://share.streamlit.io/deploy               ║
+║   2. Connect your GitHub repo                               ║
+║   3. Set main file: app_streamlit.py                        ║
+║   4. Click Deploy!                                           ║
+║                                                              ║
+╚══════════════════════════════════════════════════════════════╝
+
+TWO WEB APPS IN THIS PROJECT:
+
+✅ app_streamlit.py (ROOT FOLDER)
+   - Beautiful web interface with charts
+   - For Streamlit Cloud deployment
+   - 18 KB file with full UI
+   - Run: streamlit run app_streamlit.py
+
+⚠️  chatconvert/web/app.py (SUBFOLDER)
+   - Flask REST API (JSON endpoints only)
+   - For custom integrations/microservices
+   - 11 KB file, no UI
+   - Run: python -m chatconvert.web.app
+
+WHICH ONE TO USE?
+→ For Streamlit Cloud: app_streamlit.py ⭐
+→ For REST API: chatconvert/web/app.py
+
+See WEB_APPS_GUIDE.md for detailed comparison.

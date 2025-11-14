@@ -1,0 +1,38 @@
+# ChatConvert Toolkit Dependencies
+
+# Core dependencies (none - uses Python stdlib)
+
+# Output format dependencies
+reportlab>=4.0.0     # PDF conversion
+python-docx>=0.8.11  # DOCX (Microsoft Word) conversion
+mammoth>=1.6.0       # DOCX to HTML conversion for preview
+
+# Input format dependencies (optional)
+openpyxl>=3.0.0  # XLSX files (Excel 2007+)
+xlrd>=2.0.0      # XLS files (Excel 97-2003)
+lxml>=4.9.0      # XML/XSL processing and XSLT transformations
+pdfplumber>=0.9.0  # PDF text extraction (recommended for PDF input)
+PyPDF2>=3.0.0    # PDF text extraction (fallback)
+beautifulsoup4>=4.12.0  # HTML parsing for web exports
+
+# Image processing
+Pillow>=10.0.0   # Image handling for attachments
+
+# Web interface (Phase 5)
+flask>=3.0.0     # Flask REST API
+flask-cors>=4.0.0  # CORS support for API
+streamlit>=1.28.0  # Streamlit web app (recommended deployment)
+pandas>=2.0.0    # Data analysis for Streamlit charts
+
+# AI Analytics (Phase 3)
+groq>=0.4.0      # AI-powered analytics via Groq API
+vaderSentiment>=3.3.2  # VADER sentiment analysis (social media optimized)
+textblob>=0.17.1  # TextBlob for polarity/subjectivity analysis
+
+# Network Graph Visualization (Phase 3)
+networkx>=3.0    # Network graph analysis
+plotly>=5.14.0   # Interactive graph visualization
+
+# Note: CSV, TXT, JSON, HTML, Markdown, SQLite, and XMind conversions work without additional dependencies
+# Preview features: PDF (base64), DOCX (mammoth), Excel/CSV (pandas), SQLite (sqlite3), XMind (zipfile+xml)
+# Network graphs: networkx for graph structure, plotly for interactive visualization
