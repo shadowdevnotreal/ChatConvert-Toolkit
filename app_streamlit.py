@@ -629,19 +629,35 @@ def main():
 
     # Optional XSL file upload for XML files
     xsl_file = None
+    xsl_files = None
     if uploaded_file and uploaded_file.name.lower().endswith('.xml'):
         st.markdown("---")
-        st.markdown("#### 🎨 Optional: Upload XSL Stylesheet for XML Preview")
+        st.markdown("#### 🎨 Optional: Upload XSL Stylesheets for XML Preview")
         st.caption("XSL files can have .xsl, .xslt, or .xml extension")
-        xsl_file = st.file_uploader(
-            "Choose an XSL/XSLT file (optional)",
+        xsl_files = st.file_uploader(
+            "Choose XSL/XSLT file(s) (optional)",
             type=['xsl', 'xslt', 'xml'],
-            help="Upload an XSL stylesheet to customize XML preview styling. XSL files are XML-based and may have .xml extension.",
-            key="xsl_uploader"
+            help="Upload one or more XSL stylesheets (e.g., one for calls, one for SMS). XSL files are XML-based and may have .xml extension.",
+            key="xsl_uploader",
+            accept_multiple_files=True
         )
-        if xsl_file:
-            st.info(f"✅ XSL stylesheet loaded: **{xsl_file.name}**")
-            st.caption(f"Make sure {xsl_file.name} is a valid XSLT stylesheet (contains xsl:stylesheet or xsl:transform)")
+        if xsl_files and len(xsl_files) > 0:
+            st.info(f"✅ {len(xsl_files)} XSL stylesheet(s) loaded: **{', '.join([f.name for f in xsl_files])}**")
+
+            # Let user select which XSL to use
+            if len(xsl_files) == 1:
+                xsl_file = xsl_files[0]
+                st.caption(f"Using **{xsl_file.name}** for transformation")
+            else:
+                xsl_names = [f.name for f in xsl_files]
+                selected_xsl = st.selectbox(
+                    "Select which stylesheet to use for this XML file:",
+                    options=xsl_names,
+                    help="Choose the appropriate XSL stylesheet for your XML file (e.g., calls.xsl for call logs, sms.xsl for SMS logs)"
+                )
+                # Find the selected file object
+                xsl_file = next((f for f in xsl_files if f.name == selected_xsl), None)
+                st.caption(f"Make sure **{xsl_file.name}** is a valid XSLT stylesheet (contains xsl:stylesheet or xsl:transform)")
         else:
             st.caption("No XSL file? We'll use default preview styling.")
 
