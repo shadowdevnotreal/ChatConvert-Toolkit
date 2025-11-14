@@ -1678,7 +1678,7 @@ def main():
                                 with col1:
                                     # Interactive HTML download with charts
                                     def generate_html_report(conv, results_data):
-                                        """Generate interactive HTML analytics report with embedded charts"""
+                                        """Generate comprehensive interactive HTML analytics report with all features from Streamlit app"""
                                         import json
 
                                         html = f"""<!DOCTYPE html>
@@ -1693,6 +1693,7 @@ def main():
         .container {{ max-width: 1400px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }}
         h1 {{ color: #667eea; border-bottom: 3px solid #667eea; padding-bottom: 10px; }}
         h2 {{ color: #764ba2; margin-top: 30px; border-left: 4px solid #764ba2; padding-left: 10px; }}
+        h3 {{ color: #333; margin-top: 20px; }}
         .metric-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0; }}
         .metric-card {{ background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 8px; }}
         .metric-value {{ font-size: 2em; font-weight: bold; }}
@@ -1704,20 +1705,24 @@ def main():
         tr:hover {{ background: #f5f5f5; }}
         .keyword-cloud {{ display: flex; flex-wrap: wrap; gap: 10px; margin: 20px 0; }}
         .keyword-tag {{ background: #667eea; color: white; padding: 8px 15px; border-radius: 20px; font-size: 14px; }}
+        .topic-tag {{ background: #764ba2; color: white; padding: 8px 15px; border-radius: 20px; font-size: 14px; }}
         .timestamp {{ color: #999; font-size: 0.9em; }}
         .note {{ background: #e3f2fd; padding: 15px; border-radius: 5px; border-left: 4px solid #2196f3; margin: 20px 0; }}
+        .info-box {{ background: #f0f0f0; padding: 10px 15px; border-radius: 5px; margin: 10px 0; }}
+        hr {{ border: none; border-top: 2px solid #e0e0e0; margin: 30px 0; }}
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>📊 Interactive Analytics Report</h1>
+        <h1>📊 Comprehensive Analytics Report</h1>
         <p><strong>Title:</strong> {conv.title}</p>
         <p><strong>Platform:</strong> {conv.platform}</p>
         <p class="timestamp">Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</p>
         <div class="note">
-            💡 <strong>Interactive Report:</strong> This HTML file contains all charts and data. Hover over charts for details, zoom, and pan. Works offline!
+            💡 <strong>Fully Interactive Report:</strong> This HTML file contains ALL analytics from the online app including interactive charts, network graphs, call logs, and more. Hover over charts for details, zoom, and pan. Works completely offline!
         </div>
 
+        <h2>📈 Overview Metrics</h2>
         <div class="metric-grid">
             <div class="metric-card">
                 <div class="metric-value">{len(conv.messages)}</div>
@@ -1743,29 +1748,182 @@ def main():
                                         html += """
         </div>"""
 
-                                        # Sentiment Analysis
+                                        # Sentiment Analysis (Enhanced)
                                         if 'sentiment' in results_data and 'error' not in results_data['sentiment']:
                                             sent = results_data['sentiment']
-                                            score = sent.get('overall_score', 0)
+                                            score = sent.get('sentiment_score', sent.get('overall_score', 0))
                                             sentiment_label = sent.get('overall_sentiment', 'NEUTRAL')
-                                            # Convert score (-1 to 1) to percentage (0 to 100)
-                                            score_pct = ((score + 1) / 2) * 100
+                                            method = sent.get('method', 'unknown')
+
+                                            # Method display names
+                                            method_names = {
+                                                'ensemble': '🎯 Ensemble (VADER + TextBlob + Keywords)',
+                                                'vader': '⚡ VADER (Social Media Optimized)',
+                                                'textblob': '📊 TextBlob (Polarity Analysis)',
+                                                'ai': '🤖 Groq AI (Advanced)',
+                                                'keyword': '📝 Keyword-based (Basic)'
+                                            }
 
                                             html += f"""
+        <hr>
         <h2>😊 Sentiment Analysis</h2>
-        <p><strong>Overall Sentiment:</strong> <span style="color: {'#f44336' if score < -0.3 else '#ff9800' if score < 0.3 else '#4caf50'}; font-weight: bold;">{sentiment_label}</span></p>
-        <p><strong>Score:</strong> {score:.2f} (-1 to +1)</p>
-        <div class="sentiment-bar">
-            <div class="sentiment-fill" style="width: {score_pct}%;">{score:.2f}</div>
+        <p style="color: #666; font-size: 0.9em;"><strong>Method:</strong> {method_names.get(method, method)}</p>"""
+
+                                            # Main sentiment metrics
+                                            html += f"""
+        <div class="metric-grid">
+            <div class="metric-card">
+                <div class="metric-value">{sentiment_label}</div>
+                <div class="metric-label">Overall Sentiment</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">{score:.2f}</div>
+                <div class="metric-label">Sentiment Score</div>
+            </div>"""
+
+                                            # Add polarity if available (TextBlob/Ensemble)
+                                            if 'avg_polarity' in sent:
+                                                html += f"""
+            <div class="metric-card">
+                <div class="metric-value">{sent['avg_polarity']:.2f}</div>
+                <div class="metric-label">Avg Polarity</div>
+            </div>"""
+
+                                            # Add subjectivity if available (TextBlob/Ensemble)
+                                            if 'avg_subjectivity' in sent:
+                                                html += f"""
+            <div class="metric-card">
+                <div class="metric-value">{sent['avg_subjectivity']:.2f}</div>
+                <div class="metric-label">Subjectivity</div>
+            </div>"""
+
+                                            html += """
         </div>"""
 
-                                            if 'distribution' in sent:
+                                            # Score distribution chart
+                                            if 'score_distribution' in sent:
+                                                score_dist = sent['score_distribution']
+                                                labels = ['😡 Very Negative', '😞 Negative', '😐 Neutral', '😊 Positive', '🤩 Very Positive']
+                                                values = [
+                                                    score_dist.get('very_negative', 0),
+                                                    score_dist.get('negative', 0),
+                                                    score_dist.get('neutral', 0),
+                                                    score_dist.get('positive', 0),
+                                                    score_dist.get('very_positive', 0)
+                                                ]
+
                                                 html += f"""
-        <p><strong>Distribution:</strong> {sent['distribution']}</p>"""
+        <div class="chart-container">
+            <h3>📊 Sentiment Score Distribution</h3>
+            <div id="scoreDistChart"></div>
+            <script>
+                var scoreDistData = [{{
+                    x: {json.dumps(labels)},
+                    y: {json.dumps(values)},
+                    type: 'bar',
+                    marker: {{
+                        color: ['#f44336', '#ff9800', '#9e9e9e', '#4caf50', '#2e7d32']
+                    }}
+                }}];
+                var scoreDistLayout = {{
+                    title: '',
+                    xaxis: {{ title: '' }},
+                    yaxis: {{ title: 'Count' }},
+                    plot_bgcolor: '#fafafa',
+                    paper_bgcolor: '#fafafa'
+                }};
+                Plotly.newPlot('scoreDistChart', scoreDistData, scoreDistLayout, {{responsive: true}});
+            </script>
+        </div>"""
+
+                                        # Call Log Analytics (if available)
+                                        if 'call_log' in results_data and results_data['call_log'].get('is_call_log'):
+                                            call_data = results_data['call_log']
+                                            html += """
+        <hr>
+        <h2>📞 Call Log Analysis</h2>"""
+
+                                            # Main call metrics
+                                            total_calls = call_data.get('total_calls', 0)
+                                            completed = call_data.get('completed_calls', 0)
+                                            missed = call_data.get('missed_calls', 0)
+                                            duration = call_data.get('total_duration_minutes', 0)
+
+                                            html += f"""
+        <div class="metric-grid">
+            <div class="metric-card">
+                <div class="metric-value">{total_calls}</div>
+                <div class="metric-label">Total Calls</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">{completed}</div>
+                <div class="metric-label">Completed</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">{missed}</div>
+                <div class="metric-label">Missed</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">{duration}m</div>
+                <div class="metric-label">Total Duration</div>
+            </div>
+        </div>"""
+
+                                            # Top contacts
+                                            if call_data.get('calls_by_contact'):
+                                                html += """
+        <h3>👥 Top Contacts</h3>
+        <table>
+            <tr>
+                <th>Contact</th>
+                <th>Call Count</th>
+                <th>Duration (min)</th>
+                <th>Missed</th>
+            </tr>"""
+                                                for contact in call_data['calls_by_contact'][:10]:
+                                                    html += f"""
+            <tr>
+                <td>{contact['contact']}</td>
+                <td>{contact['call_count']}</td>
+                <td>{contact['total_duration_minutes']}</td>
+                <td>{contact['missed_count']}</td>
+            </tr>"""
+                                                html += """
+        </table>"""
+
+                                            # Peak time and busiest day
+                                            if call_data.get('peak_calling_time') or call_data.get('busiest_day'):
+                                                html += """
+        <div class="info-box">"""
+                                                if call_data.get('peak_calling_time'):
+                                                    peak = call_data['peak_calling_time']
+                                                    html += f"""
+            <p><strong>🕐 Peak Calling Time:</strong> {peak['time_range']} - {peak['call_count']} calls</p>"""
+                                                if call_data.get('busiest_day'):
+                                                    busy = call_data['busiest_day']
+                                                    html += f"""
+            <p><strong>📅 Busiest Day:</strong> {busy['day']} - {busy['count']} calls</p>"""
+                                                html += """
+        </div>"""
+
+                                        # Topics Analysis
+                                        if 'topics' in results_data and 'error' not in results_data['topics']:
+                                            topics = results_data['topics'].get('main_topics', [])[:10]
+                                            if topics:
+                                                html += """
+        <hr>
+        <h2>🏷️ Main Topics</h2>
+        <div class="keyword-cloud">"""
+                                                for topic in topics:
+                                                    html += f"""
+            <span class="topic-tag">{topic}</span>"""
+                                                html += """
+        </div>"""
 
                                         # Top Keywords
                                         if 'word_frequency' in results_data and 'top_words' in results_data['word_frequency']:
                                             html += """
+        <hr>
         <h2>🔑 Top Keywords</h2>
         <div class="keyword-cloud">"""
                                             for word, count in results_data['word_frequency']['top_words'][:20]:
@@ -1927,6 +2085,176 @@ def main():
         </div>"""
                                         except:
                                             pass
+
+                                        # Activity Patterns
+                                        if 'activity' in results_data and 'error' not in results_data['activity']:
+                                            activity = results_data['activity']
+                                            html += """
+        <hr>
+        <h2>📈 Activity Patterns</h2>"""
+
+                                            # Messages per day chart
+                                            if 'messages_per_day' in activity and activity['messages_per_day']:
+                                                days = [d['date'] for d in activity['messages_per_day'][:10]]
+                                                counts = [d['count'] for d in activity['messages_per_day'][:10]]
+
+                                                html += f"""
+        <div class="chart-container">
+            <h3>📅 Messages per Day (Last 10 Days)</h3>
+            <div id="dailyChart"></div>
+            <script>
+                var dailyData = [{{
+                    x: {json.dumps(days)},
+                    y: {json.dumps(counts)},
+                    type: 'bar',
+                    marker: {{
+                        color: 'rgb(102, 126, 234)',
+                        line: {{ color: 'rgb(44, 90, 160)', width: 1.5 }}
+                    }}
+                }}];
+                var dailyLayout = {{
+                    title: '',
+                    xaxis: {{ title: 'Date' }},
+                    yaxis: {{ title: 'Message Count' }},
+                    plot_bgcolor: '#fafafa',
+                    paper_bgcolor: '#fafafa'
+                }};
+                Plotly.newPlot('dailyChart', dailyData, dailyLayout, {{responsive: true}});
+            </script>
+        </div>"""
+
+                                            # Messages per hour chart
+                                            if 'messages_per_hour' in activity and activity['messages_per_hour']:
+                                                hours = [str(h['hour']) for h in activity['messages_per_hour']]
+                                                hourly_counts = [h['count'] for h in activity['messages_per_hour']]
+
+                                                html += f"""
+        <div class="chart-container">
+            <h3>🕐 Messages per Hour</h3>
+            <div id="hourlyChart"></div>
+            <script>
+                var hourlyData = [{{
+                    x: {json.dumps(hours)},
+                    y: {json.dumps(hourly_counts)},
+                    type: 'scatter',
+                    mode: 'lines+markers',
+                    line: {{ color: 'rgb(118, 75, 162)', width: 2 }},
+                    marker: {{ size: 8, color: 'rgb(102, 126, 234)' }}
+                }}];
+                var hourlyLayout = {{
+                    title: '',
+                    xaxis: {{ title: 'Hour of Day' }},
+                    yaxis: {{ title: 'Message Count' }},
+                    plot_bgcolor: '#fafafa',
+                    paper_bgcolor: '#fafafa'
+                }};
+                Plotly.newPlot('hourlyChart', hourlyData, hourlyLayout, {{responsive: true}});
+            </script>
+        </div>"""
+
+                                            # Most active participant
+                                            if 'most_active_participant' in activity:
+                                                most_active = activity['most_active_participant']
+                                                if most_active.get('name'):
+                                                    html += f"""
+        <div class="info-box">
+            <p><strong>🏆 Most Active Participant:</strong> {most_active['name']} ({most_active['message_count']} messages)</p>
+        </div>"""
+
+                                        # Network Graph Visualization
+                                        if 'network_graph' in results_data and results_data['network_graph'].get('available'):
+                                            network = results_data['network_graph']
+                                            stats = network.get('network_stats', {})
+
+                                            html += """
+        <hr>
+        <h2>🕸️ Conversation Network</h2>"""
+
+                                            # Network statistics
+                                            html += f"""
+        <div class="metric-grid">
+            <div class="metric-card">
+                <div class="metric-value">{stats.get('total_nodes', 0)}</div>
+                <div class="metric-label">Participants</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">{stats.get('total_edges', 0)}</div>
+                <div class="metric-label">Connections</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">{stats.get('density', 0):.1%}</div>
+                <div class="metric-label">Network Density</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">{stats.get('num_communities', 1)}</div>
+                <div class="metric-label">Communities</div>
+            </div>
+        </div>"""
+
+                                            # Interactive network graph
+                                            if 'graph_data' in network:
+                                                html += f"""
+        <div class="chart-container">
+            <h3>Interactive Network Visualization</h3>
+            <p style="color: #666; font-size: 0.9em;">Node size = message count, Edge thickness = response frequency. Hover for details.</p>
+            <div id="networkGraph"></div>
+            <script>
+                var networkFig = {json.dumps(network['graph_data'])};
+                Plotly.newPlot('networkGraph', networkFig.data, networkFig.layout, {{responsive: true}});
+            </script>
+        </div>"""
+
+                                            # Key participants
+                                            html += """
+        <div class="info-box">"""
+                                            if stats.get('most_central'):
+                                                html += f"""
+            <p><strong>🎯 Most Central:</strong> {stats['most_central']}</p>"""
+                                            if stats.get('most_responded_to'):
+                                                html += f"""
+            <p><strong>💬 Most Responded To:</strong> {stats['most_responded_to']}</p>"""
+                                            if stats.get('most_responsive'):
+                                                html += f"""
+            <p><strong>↩️ Most Responsive:</strong> {stats['most_responsive']}</p>"""
+                                            html += """
+        </div>"""
+
+                                            # Top connections table
+                                            if network.get('edges'):
+                                                html += """
+        <h3>🔗 Top Connections</h3>
+        <table>
+            <tr>
+                <th>Pattern</th>
+                <th>Responses</th>
+            </tr>"""
+                                                for edge in network['edges'][:10]:
+                                                    pattern = f"{edge['from']} → {edge['to']}"
+                                                    html += f"""
+            <tr>
+                <td>{pattern}</td>
+                <td>{edge['weight']}</td>
+            </tr>"""
+                                                html += """
+        </table>"""
+
+                                            # Communities
+                                            if stats.get('num_communities', 1) > 1 and stats.get('communities'):
+                                                html += """
+        <h3>👥 Detected Communities</h3>
+        <p style="color: #666; font-size: 0.9em;">Groups of people who communicate more with each other</p>"""
+                                                for i, community in enumerate(stats['communities'], 1):
+                                                    members = ', '.join(community)
+                                                    html += f"""
+        <div class="info-box">
+            <strong>Group {i}:</strong> {members}
+        </div>"""
+
+                                        # Processing time footer
+                                        if 'processing_time' in results_data:
+                                            html += f"""
+        <hr>
+        <p class="timestamp">⏱️ Analysis completed in {results_data.get('processing_time', 0):.2f} seconds</p>"""
 
                                         html += """
     </div>
