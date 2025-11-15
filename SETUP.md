@@ -20,18 +20,18 @@ streamlit run app_streamlit.py
 
 ChatConvert Toolkit works perfectly fine without any API keys, using keyword-based analytics. However, you can optionally add a Groq API key for AI-powered analytics.
 
-### 🚨 IMPORTANT SECURITY NOTE
+### 🚨 IMPORTANT: How API Keys Work
 
-**The app is designed so each user must enter their own API key!**
+**This app is designed so each user must enter their own API key!**
 
-- ✅ **Owner/Developer Testing**: Use secrets.toml (local) or Streamlit Cloud Secrets UI (deployed)
-- ✅ **End Users**: Must enter their own API key in the sidebar
-- 🔒 **How it works**: The app code NEVER uses secrets for end users - only for your own testing
-- ⚠️ **Important**: Secrets are for YOUR testing convenience only, not for end users
+- 🔒 **By Design**: The app code does NOT read from Streamlit secrets
+- ✅ **Everyone (including owner)**: Must enter their own API key in the sidebar
+- 💰 **Why?**: Each person pays for their own usage - no shared costs
+- 🔄 **Session-based**: Keys are stored temporarily and cleared on page reload
 
-### Option 1: Using secrets.toml (LOCAL DEVELOPMENT ONLY)
+### For Local Development (Optional Convenience)
 
-⚠️ **WARNING**: Only use this when running the app locally on your computer for development/testing!
+If running the app locally on your computer, you can save your key to avoid re-entering it:
 
 1. **Copy the example file:**
    ```bash
@@ -51,24 +51,24 @@ ChatConvert Toolkit works perfectly fine without any API keys, using keyword-bas
    ```
 
 4. **Restart the app:**
-   Your API key will be available for your own testing. End users will still need to enter their own keys.
+   Your key will be available when running locally.
 
-5. **For Streamlit Cloud deployment:**
-   - Use the Streamlit Cloud Secrets UI instead of secrets.toml
-   - Go to: App Settings → Secrets → Add your key there
-   - This is for YOUR testing only when you're signed into Streamlit Cloud
-   - End users will still see the API key input field and must provide their own keys
-   - Documentation: [Streamlit Secrets Management](https://docs.streamlit.io/deploy/streamlit-community-cloud/deploy-your-app/secrets-management)
+⚠️ **IMPORTANT**: This ONLY works for local development. The deployed app does NOT use secrets.
 
-### Option 2: Manual Entry (REQUIRED for end users)
+### For Deployed Apps (Streamlit Cloud, etc.)
 
-All end users must enter their own API key in the sidebar when using the app.
+**Everyone must enter their own API key manually in the sidebar.**
 
-**How it works:**
-- Each user enters their own API key in the sidebar
-- Keys are stored in session only (temporary, lost on page reload)
-- Each user only pays for their own usage
-- This is the ONLY way end users can use AI-powered analytics
+- No automatic key loading from secrets
+- Each visitor provides their own key
+- Keys are session-based (lost on page reload)
+- This prevents sharing API costs across users
+
+**How to use:**
+1. Visit the app
+2. Enter your API key in the sidebar
+3. Click "🧪 Test" to validate it
+4. Use AI-powered analytics
 
 ## Getting a Free Groq API Key
 
@@ -95,16 +95,16 @@ All end users must enter their own API key in the sidebar when using the app.
 
 This is normal if you haven't created the secrets file yet. The app will work fine without it using keyword-based analytics.
 
-### API Key Not Loading (For Owner/Developer Testing)
+### API Key Not Loading (Local Development Only)
 
-If you've configured secrets.toml but your key isn't loading when YOU test the app:
+If you've configured secrets.toml for local development but your key isn't loading:
 
 1. Make sure the file is named exactly `secrets.toml` (not `secrets.toml.txt`)
 2. Check that it's in the `.streamlit` directory
 3. Verify the format matches the example
 4. Restart the Streamlit app
 
-**Note**: End users should NOT expect automatic API key loading - they must enter their own keys manually.
+**Note**: secrets.toml ONLY works when running locally. Deployed apps require manual key entry.
 
 ### Still Having Issues?
 
