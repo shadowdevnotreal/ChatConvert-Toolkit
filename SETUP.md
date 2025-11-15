@@ -20,9 +20,17 @@ streamlit run app_streamlit.py
 
 ChatConvert Toolkit works perfectly fine without any API keys, using keyword-based analytics. However, you can optionally add a Groq API key for AI-powered analytics.
 
-### Option 1: Using secrets.toml (Recommended)
+### 🚨 IMPORTANT SECURITY NOTE
 
-This method saves your API key permanently so you don't need to enter it every time.
+**secrets.toml is ONLY for local development/testing!**
+
+- ✅ **Local development**: Use secrets.toml to save your key
+- ❌ **Public deployment**: DO NOT deploy with secrets.toml containing your key
+- ⚠️ **Why?** If deployed, your API key would be used by ALL users and you'd pay for everyone's usage!
+
+### Option 1: Using secrets.toml (LOCAL DEVELOPMENT ONLY)
+
+⚠️ **WARNING**: Only use this when running the app locally on your computer for development/testing!
 
 1. **Copy the example file:**
    ```bash
@@ -44,9 +52,21 @@ This method saves your API key permanently so you don't need to enter it every t
 4. **Restart the app:**
    The app will automatically load your API key on startup.
 
-### Option 2: Manual Entry
+5. **For deployment (Streamlit Cloud, etc.):**
+   Add this to your secrets.toml to indicate production mode:
+   ```toml
+   deployed = true
+   ```
+   This will prevent the app from using secrets and require users to enter their own keys.
 
-Simply enter your API key in the sidebar when running the app. Note: This is temporary and will be lost when you close the app.
+### Option 2: Manual Entry (RECOMMENDED for production)
+
+Simply enter your API key in the sidebar when running the app.
+
+**For public/deployed apps:**
+- Each user should enter their own API key
+- Keys are stored in session (temporary, lost on reload)
+- Users only pay for their own usage
 
 ## Getting a Free Groq API Key
 

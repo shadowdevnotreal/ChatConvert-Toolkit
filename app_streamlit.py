@@ -350,21 +350,29 @@ def main():
         if 'key_validated' not in st.session_state:
             st.session_state.key_validated = False
 
-        # Check if API key exists in secrets
-        secret_key = st.secrets.get("GROQ_API_KEY", None)
+        # IMPORTANT: secrets.toml is ONLY for local development/testing
+        # It should NOT be used in production/deployed apps as it would share your key with all users!
+        # Check if running locally (not deployed)
+        is_local = not st.secrets.get("deployed", False)
+        secret_key = st.secrets.get("GROQ_API_KEY", None) if is_local else None
         has_secret = secret_key is not None and len(secret_key) > 0
 
+        # Warning if secrets detected but deployed flag not set
+        if has_secret and not is_local:
+            st.warning("⚠️ API key detected in secrets but deployed flag is set. Secrets are for local development only!")
+
         if has_secret and not st.session_state.groq_api_key:
-            st.success("✓ API key loaded from secrets.toml")
+            st.info("🔧 **Development Mode**: API key loaded from secrets.toml (local only)")
             st.caption(f"Key: {secret_key[:8]}...{secret_key[-4:]}")
+            st.caption("⚠️ **For production**: Users should enter their own keys. Don't deploy with secrets.toml!")
 
         # User API key input
         user_api_key = st.text_input(
-            "Groq API Key (Optional)" if has_secret else "Groq API Key",
+            "Groq API Key (Optional)" if has_secret else "Groq API Key (Optional)",
             value=st.session_state.groq_api_key,
             type="password",
-            placeholder="gsk_your_api_key_here" if not has_secret else "Using secret key (enter to override)",
-            help="Optional: Add your Groq API key for AI-powered analytics. You can also add it to .streamlit/secrets.toml",
+            placeholder="gsk_your_api_key_here",
+            help="Enter your own Groq API key for AI-powered analytics. Each user should use their own key.",
             key="api_key_input"
         )
 
@@ -408,12 +416,12 @@ def main():
                     st.warning("⚠️ Not tested", icon="⚠️")
 
         # Status display
-        if user_api_key or has_secret:
+        if user_api_key:
             st.success("✓ AI-powered analytics enabled")
-            if has_secret and not user_api_key:
-                st.caption("Using API key from secrets.toml")
-            else:
-                st.caption("Using AI for better sentiment and topic detection")
+            st.caption("Using your personal API key")
+        elif has_secret:
+            st.success("✓ AI-powered analytics enabled (Development Mode)")
+            st.caption("Using API key from secrets.toml - LOCAL DEVELOPMENT ONLY")
         else:
             st.info("ℹ️ Using keyword-based analytics")
             st.caption("Free forever, no API key needed")
@@ -428,7 +436,7 @@ def main():
             4. Click "Create API Key"
             5. Copy the key
 
-            **Option 1: Use secrets.toml (recommended)**
+            **Option 1: Use secrets.toml (LOCAL DEVELOPMENT ONLY)**
             ```bash
             # Copy example file
             cp .streamlit/secrets.toml.example .streamlit/secrets.toml
@@ -436,10 +444,12 @@ def main():
             # Edit and add your key
             nano .streamlit/secrets.toml
             ```
-            Then restart the app - your key will load automatically!
 
-            **Option 2: Enter manually**
-            Paste your key in the input field above (temporary, lost on reload)
+            ⚠️ **IMPORTANT**: Only use this for local testing! Never deploy with secrets.toml
+            containing your API key, as it would be shared with all users!
+
+            **Option 2: Enter manually (RECOMMENDED for production)**
+            Paste your key in the input field above. Each user enters their own key.
 
             **Free tier includes:**
             - 14,400 requests/day
@@ -491,8 +501,20 @@ def main():
 
     # Initialize analytics engine
     try:
-        # Prefer session state key, fall back to secrets
-        api_key = st.session_state.groq_api_key if st.session_state.groq_api_key else st.secrets.get("GROQ_API_KEY", None)
+        # SECURITY FIX: Only use user-entered key, never fall back to secrets in production
+        # Secrets are only for local development when is_local = True
+        is_local = not st.secrets.get("deployed", False)
+
+        if st.session_state.groq_api_key:
+            # User entered their own key - use it
+            api_key = st.session_state.groq_api_key
+        elif is_local:
+            # Local development mode - can use secrets
+            api_key = st.secrets.get("GROQ_API_KEY", None)
+        else:
+            # Deployed/production - no fallback to secrets
+            api_key = None
+
         use_ai = api_key is not None and len(api_key) > 0
         analytics_engine = AnalyticsEngine(groq_api_key=api_key, use_ai=use_ai)
     except Exception as e:
