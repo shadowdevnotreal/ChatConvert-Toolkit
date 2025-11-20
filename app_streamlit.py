@@ -146,7 +146,7 @@ def preview_content(file_path, format_type):
             else:
                 df = pd.read_excel(file_path)
 
-            st.dataframe(df, use_container_width=True, height=600)
+            st.dataframe(df, width='stretch', height=600)
 
             # Show statistics
             col1, col2, col3 = st.columns(3)
@@ -303,7 +303,7 @@ def preview_content(file_path, format_type):
                         # Display as dataframe
                         import pandas as pd
                         df = pd.DataFrame(rows, columns=columns)
-                        st.dataframe(df, use_container_width=True)
+                        st.dataframe(df, width='stretch')
 
                         st.caption(f"Showing {len(rows)} of {row_count} rows")
             else:
@@ -497,28 +497,28 @@ def main():
         col1, col2, col3, col4 = st.columns(4)
 
         with col1:
-            if st.button("👨‍👩‍👧‍👦 Family SMS", use_container_width=True, help="Group chat with 4 family members (20 messages)"):
+            if st.button("👨‍👩‍👧‍👦 Family SMS", width='stretch', help="Group chat with 4 family members (20 messages)"):
                 st.session_state.demo_mode = 'family'
                 st.session_state.uploaded_file_data = None
                 st.session_state.uploaded_file_name = None
                 st.rerun()
 
         with col2:
-            if st.button("💬 Customer Service", use_container_width=True, help="Support chat resolving order issue (15 messages)"):
+            if st.button("💬 Customer Service", width='stretch', help="Support chat resolving order issue (15 messages)"):
                 st.session_state.demo_mode = 'customer_service'
                 st.session_state.uploaded_file_data = None
                 st.session_state.uploaded_file_name = None
                 st.rerun()
 
         with col3:
-            if st.button("🔧 Tech Support", use_container_width=True, help="IT troubleshooting with Q&A patterns (15 messages)"):
+            if st.button("🔧 Tech Support", width='stretch', help="IT troubleshooting with Q&A patterns (15 messages)"):
                 st.session_state.demo_mode = 'tech_support'
                 st.session_state.uploaded_file_data = None
                 st.session_state.uploaded_file_name = None
                 st.rerun()
 
         with col4:
-            if st.button("👥 Group Chat", use_container_width=True, help="6 participants - shows network analysis (23 messages)"):
+            if st.button("👥 Group Chat", width='stretch', help="6 participants - shows network analysis (23 messages)"):
                 st.session_state.demo_mode = 'group_chat'
                 st.session_state.uploaded_file_data = None
                 st.session_state.uploaded_file_name = None
@@ -528,21 +528,21 @@ def main():
         col1, col2, col3, col4 = st.columns(4)
 
         with col1:
-            if st.button("📞 Call Logs", use_container_width=True, help="Phone call history over 7 days (15 calls)"):
+            if st.button("📞 Call Logs", width='stretch', help="Phone call history over 7 days (15 calls)"):
                 st.session_state.demo_mode = 'call_log'
                 st.session_state.uploaded_file_data = None
                 st.session_state.uploaded_file_name = None
                 st.rerun()
 
         with col2:
-            if st.button("🚨 Emergency Dispatch", use_container_width=True, help="Structured data extraction demo (5 incidents)"):
+            if st.button("🚨 Emergency Dispatch", width='stretch', help="Structured data extraction demo (5 incidents)"):
                 st.session_state.demo_mode = 'dispatch'
                 st.session_state.uploaded_file_data = None
                 st.session_state.uploaded_file_name = None
                 st.rerun()
 
         with col3:
-            if st.button("📸 MMS with Media", use_container_width=True, help="Shows media gallery preview feature (7 messages, 2 images)"):
+            if st.button("📸 MMS with Media", width='stretch', help="Shows media gallery preview feature (7 messages, 2 images)"):
                 st.session_state.demo_mode = 'mms_media'
                 st.session_state.uploaded_file_data = None
                 st.session_state.uploaded_file_name = None
@@ -855,7 +855,7 @@ def main():
         if action_convert or action_analyze:
             button_text = "🔄 Convert" if action_convert and not action_analyze else "📊 Analyze" if action_analyze and not action_convert else "✨ Process (Convert & Analyze)"
 
-            if st.button(button_text, type="primary", use_container_width=True, key="process_button"):
+            if st.button(button_text, type="primary", width='stretch', key="process_button"):
                 # Process based on selected actions
                 conversion_result = None
                 analytics_results = None
@@ -1216,7 +1216,7 @@ def main():
 
                                                 # Display based on type
                                                 if att.is_image():
-                                                    st.image(data_uri, caption=att.filename, use_container_width=True)
+                                                    st.image(data_uri, caption=att.filename, width='stretch')
                                                 elif att.is_video():
                                                     st.video(data_uri)
                                                     st.caption(f"🎥 {att.filename}")
@@ -1280,7 +1280,7 @@ def main():
                                             # Show as table
                                             st.dataframe(
                                                 contacts_df[['contact', 'call_count', 'total_duration_minutes', 'missed_count']],
-                                                use_container_width=True,
+                                                width='stretch',
                                                 hide_index=True
                                             )
 
@@ -1341,7 +1341,7 @@ def main():
                                                 [(loc, count) for loc, count in dispatch['locations'].items()],
                                                 columns=['Location', 'Incident Count']
                                             )
-                                            st.dataframe(locations_df, use_container_width=True, hide_index=True)
+                                            st.dataframe(locations_df, width='stretch', hide_index=True)
 
                                         # Event types
                                         if dispatch.get('event_types'):
@@ -1350,7 +1350,7 @@ def main():
                                                 [(event, count) for event, count in dispatch['event_types'].items()],
                                                 columns=['Event Type', 'Count']
                                             )
-                                            st.dataframe(event_df, use_container_width=True, hide_index=True)
+                                            st.dataframe(event_df, width='stretch', hide_index=True)
 
                                         # Call sources
                                         if dispatch.get('call_sources'):
@@ -1359,7 +1359,7 @@ def main():
                                                 [(source, count) for source, count in dispatch['call_sources'].items()],
                                                 columns=['Source Code', 'Count']
                                             )
-                                            st.dataframe(sources_df, use_container_width=True, hide_index=True)
+                                            st.dataframe(sources_df, width='stretch', hide_index=True)
 
                                     st.markdown("---")
 
@@ -1508,7 +1508,7 @@ def main():
 
                                     import plotly.graph_objects as go
                                     fig = go.Figure(network['graph_data'])
-                                    st.plotly_chart(fig, use_container_width=True)
+                                    st.plotly_chart(fig, width='stretch')
 
                                 st.markdown("---")
 
@@ -1551,7 +1551,7 @@ def main():
                                         })
 
                                     edges_df = pd.DataFrame(edges_data)
-                                    st.dataframe(edges_df[['Pattern', 'Responses']], use_container_width=True, hide_index=True)
+                                    st.dataframe(edges_df[['Pattern', 'Responses']], width='stretch', hide_index=True)
 
                                 # Communities (if multiple detected)
                                 if stats.get('num_communities', 1) > 1 and stats.get('communities'):
@@ -1636,7 +1636,7 @@ def main():
                                         file_name=analytics_output_filename,
                                         mime=get_mime_type(selected_format),
                                         help=f"Download analytics report in {selected_format.upper()} format (same as conversion)",
-                                        use_container_width=True
+                                        width='stretch'
                                     )
 
                                     # Cleanup temp files
@@ -1654,7 +1654,7 @@ def main():
                                         data=text_report,
                                         file_name=f"analytics_{conversation.id}.txt",
                                         mime="text/plain",
-                                        use_container_width=True
+                                        width='stretch'
                                     )
                             else:
                                 # If no conversion format selected, offer multiple formats
@@ -2254,7 +2254,7 @@ def main():
                                         file_name=f"analytics_{conversation.id}.html",
                                         mime="text/html",
                                         help="Download full analytics with interactive charts (Plotly). Works offline!",
-                                        use_container_width=True
+                                        width='stretch'
                                     )
 
                                 with col2:
@@ -2267,7 +2267,7 @@ def main():
                                         file_name=f"analytics_{conversation.id}.json",
                                         mime="application/json",
                                         help="Download raw analytics data as JSON",
-                                        use_container_width=True
+                                        width='stretch'
                                     )
 
                                 with col3:
@@ -2279,7 +2279,7 @@ def main():
                                         file_name=f"analytics_{conversation.id}.txt",
                                         mime="text/plain",
                                         help="Download formatted text report",
-                                        use_container_width=True
+                                        width='stretch'
                                     )
 
                                 with col4:
@@ -2319,7 +2319,7 @@ def main():
                                         file_name=f"analytics_{conversation.id}.csv",
                                         mime="text/csv",
                                         help="Download analytics summary as CSV",
-                                        use_container_width=True
+                                        width='stretch'
                                     )
 
                             # Cleanup temp file (only if we created one)
@@ -2349,7 +2349,7 @@ def main():
                         data=conversion_result['output_data'],
                         file_name=conversion_result['output_filename'],
                         mime=get_mime_type(conversion_result['format']),
-                        use_container_width=True
+                        width='stretch'
                     )
 
                     # Cleanup output file
